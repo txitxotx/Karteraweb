@@ -1,0 +1,180 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Cartera por Tipos de Inversión
+{% endblock %}
+
+{% block content %}
+<h1>Cartera por Tipos de Inversión</h1>
+
+<h2 class="table-title">DCA</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in dca %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# Se divide la lista renta_fija_variable en dos partes #}
+{% set mitad = (renta_fija_variable | length) // 2 %}
+
+<h2 class="table-title">Renta Fija</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in renta_fija_variable[:mitad] %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="table-title">Renta Variable</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in renta_fija_variable[mitad:] %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="table-title">Cryptomonedas</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in cryptomonedas %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="table-title">Acciones</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in acciones %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="table-title">EPSV</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in baskepensiones %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5]) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6]) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % inv[7] }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+
+{% block title %}Gráfica Composición Cartera{% endblock %}
+
+{% block content %}
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #FF9800;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .chart-container, .table-container {
+            width: 90%;
+            text-align: center;
+            margin-bottom: 40px;
+            background: transparent;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .chart-container:hover, .table-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        tbody tr {
+            background-color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+        tbody tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        td {
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            color: #444;
+        }
+        .color-box {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            border-radius: 50%;
+            border: 1px solid #aaa;
+        }
+        .highlight {
+            color: black;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gráfica Composición Cartera</h1>
+
+        <!-- Gráfica de Barras -->
+        <div class="chart-container">
+            <div id="chart"></div>
+        </div>
+
+        <!-- Tabla de Datos -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Activo</th>
+                        <th>Dinero Total (€)</th>
+                        <th>Porcentaje (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for color, label, size, percentage in data %}
+                    <tr>
+                        <td>
+                            <div class="color-box" style="background-color: {{ color }};"></div>
+                        </td>
+                        <td>{{ label }}</td>
+                        <td>{{ '{:,.2f}€'.format(size) }}</td>
+                        <td class="highlight">{{ '{:.2f}'.format(percentage) }}%</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td><strong>Total</strong></td>
+                        <td><strong>{{ '{:,.2f}€'.format(overall_total) }}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Nueva Gráfica de Pastel -->
+        <div class="chart-container">
+            <div id="chart_pie"></div>
+        </div>
+    </div>
+
+    <script>
+        Plotly.newPlot('chart', {{ graph_bar_json | safe }}.data, {{ graph_bar_json | safe }}.layout, {responsive: true});
+        Plotly.newPlot('chart_pie', {{ graph_pie_json | safe }}.data, {{ graph_pie_json | safe }}.layout, {responsive: true});
+    </script>
+</body>
+</html>
+{% endblock %}

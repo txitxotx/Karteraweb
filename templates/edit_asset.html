@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Activo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Activo</h2>
+        <form id="edit-asset-form">
+            <div class="form-group">
+                <label for="isin">ISIN:</label>
+                <select id="isin" name="isin" required>
+                    {% for inv in investments %}
+                    <option value="{{ inv[1] }}">{{ inv[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="purchase_value">Valor de Compra:</label>
+                <input type="number" step="0.01" id="purchase_value" name="purchase_value" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Cantidad:</label>
+                <input type="number" step="0.01" id="amount" name="amount" required>
+            </div>
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('edit-asset-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const isin = document.getElementById('isin').value;
+            const purchase_value = document.getElementById('purchase_value').value;
+            const amount = document.getElementById('amount').value;
+
+            fetch('/edit-asset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    isin: isin,
+                    purchase_value: purchase_value,
+                    amount: amount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.opener.location.reload(); // Recargar la página principal para ver los cambios
+                    window.close(); // Cerrar la ventana emergente
+                } else {
+                    alert('Error al editar el activo: ' + (data.error || ''));
+                }
+            })
+            .catch(error => {
+                console.error('Error al editar el activo:', error);
+            });
+        });
+    </script>
+</body>
+</html>

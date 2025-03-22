@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Cartera Completa
+{% endblock %}
+
+{% block content %}
+<h1>Cartera Completa</h1>
+
+<!-- Botón para agregar nuevo activo y editar activo -->
+<button id="add-asset" onclick="openAddAssetWindow()">Agregar Nuevo Activo</button>
+<button id="edit-asset" onclick="openEditAssetWindow()">Editar Activo</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ISIN/Ticker</th>
+            <th>Nombre del Activo</th>
+            <th>Valor de Compra</th>
+            <th>Cantidad</th>
+            <th>Valor Actual</th>
+            <th>Dinero Total</th>
+            <th>% Ganancia/Pérdida</th>
+            <th>Enlace</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set total_quantity = 0 %}
+        {% set total_money = 0 %}
+        {% set total_purchase_value = 0 %}
+        {% set total_gain_loss_percentage = 0 %}
+        {% set isin_list = ["0P000125T6.F", "0P00000DQZ.F", "0P00001QND.F", "0P0001B7DE.F", "0P0001R4YK.F", "0P00000DRB.F"] %}
+        {% for idx in range(0, 6) %}
+        <tr>
+            <td>{{ isin_list[idx] }}</td>
+            <td>{{ investments[idx][2] }}</td>
+            <td>{{ '{:,.2f}'.format(investments[idx][3] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(investments[idx][4] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(investments[idx][5] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(investments[idx][6] | float) }}€</td>
+            <td class="{{ 'positive' if investments[idx][7] >= 0 else 'negative' }}">{{ '%.2f' % (investments[idx][7] | float) }}%</td>
+            <td><a href="https://finance.yahoo.com/quote/{{ isin_list[idx] }}" target="_blank">📈</a></td>
+            {% set total_quantity = total_quantity + (investments[idx][4] | float) %}
+            {% set total_money = total_money + (investments[idx][6] | float) %}
+            {% set total_purchase_value = total_purchase_value + (investments[idx][3] | float) %}
+            {% set total_gain_loss_percentage = total_gain_loss_percentage + (investments[idx][7] | float) %}
+        </tr>
+        {% endfor %}
+        {% for inv in investments[6:] %}
+        <tr>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>{{ '{:,.2f}'.format(inv[3] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[4] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[5] | float) }}€</td>
+            <td>{{ '{:,.2f}'.format(inv[6] | float) }}€</td>
+            <td class="{{ 'positive' if inv[7] >= 0 else 'negative' }}">{{ '%.2f' % (inv[7] | float) }}%</td>
+            <td><a href="https://finance.yahoo.com/quote/{{ inv[1] }}" target="_blank">📈</a></td>
+            {% set total_quantity = total_quantity + (inv[4] | float) %}
+            {% set total_money = total_money + (inv[6] | float) %}
+            {% set total_purchase_value = total_purchase_value + (inv[3] | float) %}
+            {% set total_gain_loss_percentage = total_gain_loss_percentage + (inv[7] | float) %}
+        </tr>
+        {% endfor %}
+        <!-- Fila de totales -->
+        <tr>
+            <td></td>
+            <td>TOTALES</td>
+            <td></td>
+            <td>{{ '{:,.2f}'.format(total_quantity) }}€</td>
+            <td></td>
+            <td>{{ '{:,.2f}'.format(total_money) }}€</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Botón de actualizar, colocado debajo de la tabla y alineado a la izquierda -->
+<div style="text-align: left; margin-top: 10px;">
+    <button id="update-assets" onclick="updateAssets()">Actualizar</button>
+</div>
+
+<script>
+function updateAssets() {
+    fetch('/update-assets')
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Recargar la página para ver los cambios
+        } else {
+            alert('Error al actualizar los activos');
+        }
+    })
+    .catch(error => {
+        console.error('Error al actualizar los activos:', error);
+    });
+}
+
+function openEditAssetWindow() {
+    window.open('/edit-asset-window', 'Editar Activo', 'width=600,height=400');
+}
+
+function openAddAssetWindow() {
+    window.open('/add-asset-window', 'Agregar Nuevo Activo', 'width=600,height=400');
+}
+</script>
+{% endblock %}

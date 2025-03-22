@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Cartera Bancaria
+{% endblock %}
+
+{% block content %}
+<h1>Cartera Bancaria</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Banco</th>
+            <th>Inversión</th>
+            <th>%</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bank in banks %}
+        <tr class="{% if bank[0] == 'TOTALES' %}table-totals{% endif %}">
+            <td>{{ bank[0] }}</td>
+            <td>{{ '{:,.2f}'.format(bank[1]) }}€</td>
+            <td>{% if bank[0] == 'TOTALES' %}{% else %}{{ bank[2] }}%{% endif %}</td>
+            <td>{{ '{:,.2f}'.format(bank[1] + (bank[1] * bank[2] / 100)) if bank[0] != 'TOTALES' else '{:,.2f}'.format(bank[3]) }}€</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

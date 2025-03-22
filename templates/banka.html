@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Cartera Bancaria
+{% endblock %}
+
+{% block content %}
+<h1>Cartera Bancaria</h1>
+<table class="table" style="width: 96%; margin: 0 auto;">
+    <thead>
+        <tr>
+            <th>Banco</th>
+            <th>Inversión</th>
+            <th>%</th>
+            <th>Resultado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bank in banks %}
+        <tr class="{% if bank[0] == 'TOTALES' %}table-totals{% endif %}">
+            <td>{{ bank[0] }}</td>
+            <td>{{ '{:,.2f}'.format(bank[1]) }}€</td>
+            <td>{% if bank[0] == 'TOTALES' %}{% else %}{{ bank[2] }}%{% endif %}</td>
+            <td>{{ '{:,.2f}'.format(bank[1] + (bank[1] * bank[2] / 100)) if bank[0] != 'TOTALES' else '{:,.2f}'.format(bank[3]) }}€</td>
+            <td>
+                {% if bank[0] != 'TOTALES' %}
+                <button class="btn btn-warning btn-sm edit-btn" onclick="editBank('{{ bank[0] }}', '{{ bank[1] }}', '{{ bank[2] }}')">Editar</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<button class="btn btn-primary add-btn" onclick="openAddModal()">Añadir Banco</button>
+
+<!-- Modal Añadir Banco -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModal()">&times;</span>
+        <h2>Añadir Banco</h2>
+        <form action="{{ url_for('add_bank') }}" method="post">
+            <label for="bank_name">Nombre del Banco:</label>
+            <input type="text" id="bank_name" name="bank_name" required>
+            
+            <label for="investment">Inversión (€):</label>
+            <input type="number" id="investment" name="investment" step="0.01" required>
+            
+            <label for="percentage">Porcentaje (%):</label>
+            <input type="number" id="percentage" name="percentage" step="0.01" required>
+            
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Editar Banco -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Editar Banco</h2>
+        <form action="{{ url_for('edit_bank') }}" method="post">
+            <!-- Campo oculto para identificar el banco a editar -->
+            <input type="hidden" id="old_bank_name" name="old_bank_name">
+            <label for="edit_bank_name">Nombre del Banco:</label>
+            <input type="text" id="edit_bank_name" name="edit_bank_name" required>
+            
+            <label for="edit_investment">Inversión (€):</label>
+            <input type="number" id="edit_investment" name="edit_investment" step="0.01" required>
+            
+            <label for="edit_percentage">Porcentaje (%):</label>
+            <input type="number" id="edit_percentage" name="edit_percentage" step="0.01" required>
+            
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openAddModal() {
+    document.getElementById("addModal").style.display = "block";
+}
+function closeAddModal() {
+    document.getElementById("addModal").style.display = "none";
+}
+function editBank(name, investment, percentage) {
+    // Establecemos el valor oculto con el nombre original
+    document.getElementById("old_bank_name").value = name;
+    document.getElementById("edit_bank_name").value = name;
+    document.getElementById("edit_investment").value = investment;
+    document.getElementById("edit_percentage").value = percentage;
+    document.getElementById("editModal").style.display = "block";
+}
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+</script>
+
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    margin: auto;
+    text-align: center;
+}
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+.table tbody tr {
+    height: auto;
+    line-height: 1.5;
+}
+.edit-btn, .add-btn {
+    font-size: 1em;
+    height: auto;
+    padding: 5px 10px;
+}
+</style>
+
+{% endblock %}

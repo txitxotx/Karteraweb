@@ -1,0 +1,273 @@
+/* Estilos generales */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #141e30, #243b55);
+    margin: 0;
+    padding: 20px;
+    color: #fff;
+}
+
+h1 {
+    color: #ff9800;
+    text-align: center;
+    margin-top: 70px; /* Añadir margen superior para que el título no quede tapado por el menú */
+    margin-bottom: 40px;
+}
+
+h2.table-title {
+    color: #00FF00;
+    text-align: center;  /* Centrar los nombres de las tablas */
+    margin-top: 40px;
+    font-size: 24px;  /* Ajustar el tamaño del encabezado */
+}
+/* Estilos de las tablas */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    font-size: 14px;  /* Ajustar el tamaño de la fuente */
+}
+
+.table thead {
+    background: #1f2833;
+}
+
+.table thead th {
+    color: #66fcf1;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;  /* Ajustar el tamaño del padding */
+    transition: background 0.3s;
+}
+
+.table tbody tr {
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.3s;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.table tbody td {
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;  /* Ajustar el tamaño del padding */
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;  /* Ajustar el tamaño de la fuente */
+    white-space: nowrap;
+}
+
+.table tbody td:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #66fcf1;
+}
+
+.table-totals td {
+    background: #1f2833;  /* Mismo azul que en los nombres de las columnas */
+    color: #66fcf1 !important;
+}
+
+.positive {
+    color: #00FF00 !important;  /* Verde más vivo */
+}
+
+.negative {
+    color: #FF0000 !important;  /* Rojo más vivo */
+}
+
+.neutral {
+    color: #cccccc !important;
+}
+/* Estilos del botón de actualizar */
+#update-assets {
+    background: linear-gradient(to right, #e0e0e0, #a9a9a9); /* Fondo gris metalizado degradado */
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    position: relative;
+    top: 10px;
+    left: 0;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+#update-assets:hover {
+    background: linear-gradient(to right, #a9a9a9, #808080); /* Fondo gris metalizado más oscuro */
+    color: #fff;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.graph-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.graph-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #00FF00;  /* Color verde */
+    white-space: nowrap;  /* Ajustar el texto en una sola línea */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+}
+
+.graph-container img {
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #d3d3d3, #808080); /* Fondo gris metalizado degradado */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.graph-container img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+/* Estilos del menú */
+.navbar {
+    width: 100%;
+    background-color: rgba(51, 51, 51, 0.9); /* Fondo ligeramente transparente */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: top 0.3s, opacity 0.3s;
+}
+
+.navbar.hidden {
+    top: -60px;  /* Ajusta el valor según sea necesario */
+    opacity: 0;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #555;
+    border-radius: 5px;
+    color: #00FF00;  /* Color verde al pasar el ratón */
+}
+h1 {
+    margin-top: 70px;  /* Añadir margen superior para que el título no quede tapado por el menú */
+}
+button {
+    background-color: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #e68a00;
+}
+#add-asset-form {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+#add-asset-form label {
+    color: #ff9800;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#add-asset-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#add-asset-form button {
+    width: 100%;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #333;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+/* Estilos de las tablas para la nueva página */
+.investment-categories th, .investment-categories td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.investment-categories th {
+    background-color: #1f2833;
+    color: #66fcf1;
+    font-weight: bold;
+    text-align: center;
+}
+
+.investment-categories tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #66fcf1;
+}

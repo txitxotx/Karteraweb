@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <div class="navbar-content">
+            <a href="{{ url_for('index') }}">Cartera Completa</a>
+            <a href="{{ url_for('tables') }}">Cartera por Tipos de Inversión</a>
+            <a href="{{ url_for('pie_chart') }}">Grafica Composicion Cartera</a>
+            <a href="{{ url_for('investment_categories') }}">Grafica Por Activo</a>
+            <a href="{{ url_for('bank') }}">Bancos & Brokers</a>
+            <a href="{{ url_for('graphs') }}">Gráficas</a>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+    <script>
+        // Script para ocultar/mostrar el menú automáticamente
+        document.addEventListener("DOMContentLoaded", function() {
+            var navbar = document.getElementById("navbar");
+            var mouseOverNavbar = false;
+            
+            navbar.addEventListener("mouseenter", function() {
+                mouseOverNavbar = true;
+                navbar.classList.remove("hidden");
+            });
+
+            navbar.addEventListener("mouseleave", function() {
+                mouseOverNavbar = false;
+            });
+
+            window.onscroll = function() {
+                if (!mouseOverNavbar) {
+                    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                        navbar.classList.add("hidden");
+                    } else {
+                        navbar.classList.remove("hidden");
+                    }
+                }
+            };
+        });
+    </script>
+</body>
+</html>

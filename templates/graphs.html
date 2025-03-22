@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Gráficas
+{% endblock %}
+
+{% block content %}
+<h1>Gráficas</h1>
+
+<div class="grid-container">
+    {% for image in images %}
+        <div class="graph-container">
+            <div class="graph-title">{{ image.name }}</div>
+            <img src="data:image/png;base64,{{ image.url }}" alt="Gráfico de activo">
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
