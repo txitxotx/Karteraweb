@@ -93,7 +93,7 @@ def init_db():
             conn.commit()
 
 init_db()
-@app.route('/')
+@app.route('/templates/')
 def index():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
@@ -106,7 +106,7 @@ def index():
     
     return render_template('index.html', investments=investments, total_quantity=total_quantity, total_money=total_money, total_purchase_value=total_purchase_value)
 
-@app.route('/update-assets', methods=['GET'])
+@app.route('/templates/update-assets', methods=['GET'])
 def update_assets():
     try:
         with sqlite3.connect('database.db') as conn:
@@ -131,11 +131,11 @@ def update_assets():
     except Exception as e:
         print(f"Error al actualizar los activos: {e}")
         return jsonify(success=False)
-@app.route('/add-asset-window')
+@app.route('/templates/add-asset-window')
 def add_asset_window():
     return render_template('add_asset.html')
 
-@app.route('/add-asset', methods=['POST'])
+@app.route('/templates/add-asset', methods=['POST'])
 def add_asset():
     try:
         data = request.get_json()
@@ -159,7 +159,7 @@ def add_asset():
     except Exception as e:
         print(f"Error al agregar el activo: {e}")
         return jsonify(success=False, error=str(e))
-@app.route('/edit-asset', methods=['POST'])
+@app.route('/templates/edit-asset', methods=['POST'])
 def edit_asset():
     try:
         data = request.get_json()
@@ -189,7 +189,7 @@ def edit_asset():
     except Exception as e:
         print(f"Error al editar el activo: {e}")
         return jsonify(success=False, error=str(e))
-@app.route('/edit-asset-window')
+@app.route('/templates/edit-asset-window')
 def edit_asset_window():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
@@ -197,7 +197,7 @@ def edit_asset_window():
         investments = cursor.fetchall()
     return render_template('edit_asset.html', investments=investments)
 
-@app.route('/graphs')
+@app.route('/templates/graphs')
 def graphs():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
@@ -216,7 +216,7 @@ def graphs():
         images.append({'url': plot_url, 'name': investment[1]})
 
     return render_template('graphs.html', images=images)
-@app.route('/tables')
+@app.route('/templates/tables')
 def tables():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
@@ -248,7 +248,7 @@ def bank():
     banks.append(("TOTALES", total_inversion, "", total_resultado))
 
     return render_template('bank.html', banks=banks)
-@app.route('/investment-categories')
+@app.route('/templates/investment-categories')
 def investment_categories():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
@@ -294,7 +294,7 @@ def investment_categories():
     color_data = list(zip(color_hex, labels, sizes, percentages))
 
     return render_template('investment_categories.html', graph_json=graph_json, data=color_data, total_money_sum=total_money_sum)
-@app.route('/pie-chart')
+@app.route('/templates/pie-chart')
 def pie_chart():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
