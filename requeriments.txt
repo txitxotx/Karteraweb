@@ -1,0 +1,6 @@
+Flask
+yfinance
+matplotlib
+seaborn
+plotly
+vercel-wsgi
