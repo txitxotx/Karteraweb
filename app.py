@@ -44,7 +44,7 @@ def create_graph(ticker, ax):
     ax.yaxis.set_major_locator(plt.MaxNLocator(10))
     ax.grid(color='#FFFFFF', linestyle='-', linewidth=0.5)
 def init_db():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS investments (
@@ -95,7 +95,7 @@ def init_db():
 init_db()
 @app.route('/templates/')
 def index():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM investments')
         investments = cursor.fetchall()
@@ -109,7 +109,7 @@ def index():
 @app.route('/templates/update-assets', methods=['GET'])
 def update_assets():
     try:
-        with sqlite3.connect('database.db') as conn:
+        with sqlite3.connect('/tmp/database.db') as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT id, isin, purchase_value, amount FROM investments')
             investments = cursor.fetchall()
@@ -148,7 +148,7 @@ def add_asset():
         profit_loss_percentage = ((current_value - purchase_value) / purchase_value) * 100
         total_money = amount + (amount * profit_loss_percentage / 100)
         
-        with sqlite3.connect('database.db') as conn:
+        with sqlite3.connect('/tmp/database.db') as conn:
             cursor = conn.cursor()
             cursor.execute('''
                 INSERT INTO investments (isin, asset_name, purchase_value, amount, current_value, total_money, profit_loss_percentage)
@@ -167,7 +167,7 @@ def edit_asset():
         purchase_value = float(data['purchase_value'])
         amount = float(data['amount'])
         
-        with sqlite3.connect('database.db') as conn:
+        with sqlite3.connect('/tmp/database.db') as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT isin FROM investments WHERE isin = ?', (isin,))
             result = cursor.fetchone()
@@ -191,7 +191,7 @@ def edit_asset():
         return jsonify(success=False, error=str(e))
 @app.route('/templates/edit-asset-window')
 def edit_asset_window():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM investments')
         investments = cursor.fetchall()
@@ -199,7 +199,7 @@ def edit_asset_window():
 
 @app.route('/templates/graphs')
 def graphs():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT isin, asset_name FROM investments')
         investments = cursor.fetchall()
@@ -218,7 +218,7 @@ def graphs():
     return render_template('graphs.html', images=images)
 @app.route('/templates/tables')
 def tables():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM investments')
         investments = cursor.fetchall()
@@ -250,7 +250,7 @@ def bank():
     return render_template('bank.html', banks=banks)
 @app.route('/templates/investment-categories')
 def investment_categories():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT asset_name, total_money FROM investments')
         data = cursor.fetchall()
@@ -296,7 +296,7 @@ def investment_categories():
     return render_template('investment_categories.html', graph_json=graph_json, data=color_data, total_money_sum=total_money_sum)
 @app.route('/templates/pie-chart')
 def pie_chart():
-    with sqlite3.connect('database.db') as conn:
+    with sqlite3.connect('/tmp/database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM investments')
         investments = cursor.fetchall()
