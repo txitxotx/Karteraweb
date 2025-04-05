@@ -92,6 +92,18 @@ def init_db():
 
             conn.commit()
 
+@app.route('/test-db')
+def test_db():
+    try:
+        with sqlite3.connect('/tmp/database.db') as conn:
+            conn.execute("CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, nombre TEXT)")
+        return "La base de datos se abrió y la tabla de prueba se creó correctamente."
+    except Exception as e:
+        return f"Error al abrir la base de datos: {e}"
+
+
+
+
 init_db()
 @app.route('/templates/')
 def index():
